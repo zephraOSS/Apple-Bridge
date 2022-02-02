@@ -1,0 +1,24 @@
+{
+  "name": "apple-bridge",
+  "version": "1.0.0",
+  "description": "Retrieve data from Apple Services on macOS and Windows",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZephraCloud/Apple-Bridge.git"
+  },
+  "keywords": [
+    "apple",
+    "itunes"
+  ],
+  "author": "zephra",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ZephraCloud/Apple-Bridge/issues"
+  },
+  "homepage": "https://github.com/ZephraCloud/Apple-Bridge#readme",
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  }
+}
