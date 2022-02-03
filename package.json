@@ -1,5 +1,5 @@
 {
-  "name": "@zephra/apple-bridge",
+  "name": "apple-bridge",
   "version": "1.0.0",
   "description": "Retrieve data from Apple Services on macOS and Windows",
   "main": "index.js",
