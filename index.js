@@ -2,7 +2,7 @@ class AppleBridge {
     constructor() {
         this._events = {
             music: [],
-            tv: [],
+            tv: []
         };
     }
 
