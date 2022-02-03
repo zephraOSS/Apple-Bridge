@@ -1,5 +1,5 @@
 {
-  "name": "apple-bridge",
+  "name": "@zephra/apple-bridge",
   "version": "1.0.0",
   "description": "Retrieve data from Apple Services on macOS and Windows",
   "main": "index.js",
@@ -17,8 +17,5 @@
   "bugs": {
     "url": "https://github.com/ZephraCloud/Apple-Bridge/issues"
   },
-  "homepage": "https://github.com/ZephraCloud/Apple-Bridge#readme",
-  "devDependencies": {
-    "typescript": "^4.5.5"
-  }
+  "homepage": "https://github.com/ZephraCloud/Apple-Bridge#readme"
 }
