@@ -1,8 +1,8 @@
 class AppleBridge {
     constructor() {
         this._events = {
-            "music": [],
-            "tv": []
+            music: [],
+            tv: [],
         };
     }
 
@@ -16,7 +16,7 @@ class AppleBridge {
     emit(event, service, ...args) {
         if (!this._events[service] || !this._events[service][event]) return;
 
-        this._events[service][event].forEach(callback => {
+        this._events[service][event].forEach((callback) => {
             callback(...args);
         });
     }
@@ -24,7 +24,9 @@ class AppleBridge {
     off(event, service, callback) {
         if (!this._events[service] || !this._events[service][event]) return;
 
-        this._events[service][event] = this._events[service][event].filter(cb => cb !== callback);
+        this._events[service][event] = this._events[service][event].filter(
+            (cb) => cb !== callback
+        );
     }
 
     once(event, service, callback) {
