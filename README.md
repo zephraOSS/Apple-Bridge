@@ -3,7 +3,6 @@ Retrieve data from Apple Services on macOS and Windows
 
 # Example
 ```js
-// Example
 const AppleBridge = require("apple-bridge"),
     bridge = new AppleBridge();
     
