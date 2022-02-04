@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ZephraCloud/Apple-Bridge/issues"
   },
-  "homepage": "https://github.com/ZephraCloud/Apple-Bridge#readme"
+  "homepage": "https://github.com/ZephraCloud/Apple-Bridge#readme",
+  "dependencies": {
+    "child-process-promise": "^2.2.1"
+  }
 }
