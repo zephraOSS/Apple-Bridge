@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Retrieve data from Apple Services on macOS and Windows",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ZephraCloud/Apple-Bridge.git"
