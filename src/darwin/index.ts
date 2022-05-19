@@ -1,5 +1,6 @@
-const AppleBridge = require("../index.js"),
-    path = require("path");
+import { AppleBridge } from "../index";
+import { exec } from "child-process-promise";
+import * as path from "path";
 
 setInterval(fetchAll, 1000);
 
@@ -13,7 +14,7 @@ function fetchAll() {
  * @returns {Object} Current track data
  */
 async function fetchAppleMusic() {
-    if (Object.keys(AppleBridge.getInstance()._events.music).length === 0)
+    if (Object.keys(AppleBridge.getInstance().events.music).length === 0)
         return;
 
     const data = (

@@ -1,6 +1,25 @@
-class AppleBridge {
+import { execSync } from "child_process";
+import * as path from "path";
+
+execSync(
+    `${
+        process.platform === "win32" ? "cscript //Nologo" : "osascript"
+    } "${path.resolve("dist", process.platform, "index.js")}"`,
+    {
+        windowsHide: true
+    }
+);
+
+export class AppleBridge {
+    public events: {
+        music: Function[];
+        tv: Function[];
+    };
+
+    static instance: AppleBridge;
+
     constructor() {
-        this._events = {
+        this.events = {
             music: [],
             tv: []
         };
@@ -13,10 +32,10 @@ class AppleBridge {
      * @param {Function} callback
      */
     on(event, service, callback) {
-        if (!this._events[service]) return;
-        if (!this._events[service][event]) this._events[service][event] = [];
+        if (!this.events[service]) return;
+        if (!this.events[service][event]) this.events[service][event] = [];
 
-        this._events[service][event].push(callback);
+        this.events[service][event].push(callback);
     }
 
     /**
@@ -26,9 +45,9 @@ class AppleBridge {
      * @param  {...any} args
      */
     emit(event, service, ...args) {
-        if (!this._events[service] || !this._events[service][event]) return;
+        if (!this.events[service] || !this.events[service][event]) return;
 
-        this._events[service][event].forEach((callback) => {
+        this.events[service][event].forEach((callback) => {
             callback(...args);
         });
     }
@@ -40,9 +59,9 @@ class AppleBridge {
      * @param {Function} callback
      */
     off(event, service, callback) {
-        if (!this._events[service] || !this._events[service][event]) return;
+        if (!this.events[service] || !this.events[service][event]) return;
 
-        this._events[service][event] = this._events[service][event].filter(
+        this.events[service][event] = this.events[service][event].filter(
             (cb) => cb !== callback
         );
     }
@@ -69,9 +88,9 @@ class AppleBridge {
      * @returns {AppleBridge}
      */
     static getInstance() {
-        if (!this._instance) this._instance = new AppleBridge();
+        if (!this.instance) AppleBridge.instance = new AppleBridge();
 
-        return this._instance;
+        return AppleBridge.instance;
     }
 
     /**
@@ -81,7 +100,7 @@ class AppleBridge {
      * @param {Function} callback
      */
     static on(event, service, callback) {
-        this.getInstance().on(event, service, callback);
+        AppleBridge.getInstance().on(event, service, callback);
     }
 
     /**
@@ -91,7 +110,7 @@ class AppleBridge {
      * @param  {...any} args
      */
     static emit(event, service, ...args) {
-        this.getInstance().emit(event, service, ...args);
+        AppleBridge.getInstance().emit(event, service, ...args);
     }
 
     /**
@@ -101,7 +120,7 @@ class AppleBridge {
      * @param {Function} callback
      */
     static off(event, service, callback) {
-        this.getInstance().off(event, service, callback);
+        AppleBridge.getInstance().off(event, service, callback);
     }
 
     /**
@@ -111,8 +130,7 @@ class AppleBridge {
      * @param {Function} callback
      */
     static once(event, service, callback) {
-        this.getInstance().once(event, service, callback);
+        AppleBridge.getInstance().once(event, service, callback);
     }
 }
 
-module.exports = AppleBridge;
