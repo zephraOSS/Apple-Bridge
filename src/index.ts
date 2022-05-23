@@ -14,16 +14,12 @@ export class AppleBridge {
     public events: {
         music: Function[];
         tv: Function[];
+    } = {
+        music: [],
+        tv: []
     };
 
     static instance: AppleBridge;
-
-    constructor() {
-        this.events = {
-            music: [],
-            tv: []
-        };
-    }
 
     /**
      * Listen to events
