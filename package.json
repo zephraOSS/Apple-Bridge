@@ -1,6 +1,6 @@
 {
     "name": "apple-bridge",
-    "version": "1.0.0",
+    "version": "1.0.1-beta.1",
     "description": "Retrieve data from Apple Services on macOS and Windows",
     "scripts": {
         "start": "npm run build && node ./dist/index.js",
