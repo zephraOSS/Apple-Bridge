@@ -1,15 +1,3 @@
-import { execSync } from "child_process";
-import * as path from "path";
-
-execSync(
-    `${
-        process.platform === "win32" ? "cscript //Nologo" : "osascript"
-    } "${path.resolve("dist", process.platform, "index.js")}"`,
-    {
-        windowsHide: true
-    }
-);
-
 export class AppleBridge {
     public events: {
         music: Function[];
@@ -129,4 +117,3 @@ export class AppleBridge {
         AppleBridge.getInstance().once(event, service, callback);
     }
 }
-

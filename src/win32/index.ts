@@ -1,6 +1,6 @@
 import { AppleBridge } from "../index";
-
-const iTunes = WScript.CreateObject("iTunes.Application");
+import { execSync } from "child_process";
+import * as path from "path";
 
 setInterval(fetchAll, 1000);
 
@@ -17,51 +17,43 @@ function fetchAppleMusic() {
     if (Object.keys(AppleBridge.getInstance().events.music).length === 0)
         return;
 
-    const data = iTunes.currentTrack;
+    const data: any = fetchITunes();
 
-    if (!data || data === "stopped") AppleBridge.emit("stopped", "music");
-    else {
-        const [
-                artist,
-                title,
-                album,
-                mediaKind,
-                duration,
-                elapsedTime,
-                remainingTime,
-                genre,
-                id
-            ] = data,
-            playerState = getITunesPlayerState();
-
-        AppleBridge.emit(playerState, "music", {
-            artist,
-            title,
-            album,
-            mediaKind,
-            duration,
-            elapsedTime,
-            remainingTime,
-            genre,
-            id,
-            playerState
-        });
-    }
+    if (!data || data?.playerState === "stopped")
+        AppleBridge.emit("stopped", "music");
+    else AppleBridge.emit(data.playerState, "music", data);
 }
 
+// @ts-ignore
 function getITunesPlayerState() {
-    const playerState = iTunes.playerState;
+    const playerState = fetchITunes("playerState");
 
     switch (playerState) {
-        case 0:
+        case "0":
             return "stopped";
-        case 1:
+        case "1":
             return "playing";
-        case 2:
+        case "2":
             return "paused";
         default:
             return "unknown";
     }
+}
+
+export function fetchITunes(type = "currentTrack") {
+    const data = execSync(
+        `cscript //Nologo "${path.join(
+            __dirname,
+            "wscript",
+            "fetch.js"
+        )}" ${type}`,
+        {
+            encoding: "utf8",
+            windowsHide: true
+        }
+    );
+
+    return type === "currentTrack" ? JSON.parse(decodeURI(data)) : data;
 }
 
 /*
