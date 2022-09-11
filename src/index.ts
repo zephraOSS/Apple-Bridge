@@ -1,3 +1,5 @@
+import { fetchITunes } from "./win32";
+
 export class AppleBridge {
     public events: {
         music: Function[];
@@ -117,3 +119,9 @@ export class AppleBridge {
         AppleBridge.getInstance().once(event, service, callback);
     }
 }
+
+setTimeout(function () {
+    const currentTrack = fetchITunes();
+
+    AppleBridge.emit(currentTrack.playerState, "music", currentTrack);
+}, 500);
