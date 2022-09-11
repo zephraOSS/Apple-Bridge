@@ -3,8 +3,9 @@
     "version": "1.0.0",
     "description": "Retrieve data from Apple Services on macOS and Windows",
     "scripts": {
+        "start": "npm run build && node ./dist/index.js",
         "build": "tsc && npm run copy",
-        "copy": "copyfiles -u 1 -a src/darwin/*.scpt dist/",
+        "copy": "copyfiles -u 1 -a src/darwin/*.scpt src/win32/wscript/*.js dist/",
         "test": "echo \"Who needs tests anyway?\" && exit 0"
     },
     "repository": {
