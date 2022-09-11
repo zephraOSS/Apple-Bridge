@@ -26,7 +26,6 @@
     },
     "homepage": "https://github.com/ZephraCloud/Apple-Bridge#readme",
     "dependencies": {
-        "apple-bridge": "^1.0.1-beta.1",
         "child-process-promise": "^2.2.1"
     },
     "devDependencies": {
