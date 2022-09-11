@@ -2,6 +2,8 @@
     "name": "apple-bridge",
     "version": "1.0.1-beta.1",
     "description": "Retrieve data from Apple Services on macOS and Windows",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "start": "npm run build && node ./dist/index.js",
         "build": "tsc && npm run copy",
@@ -24,11 +26,15 @@
     },
     "homepage": "https://github.com/ZephraCloud/Apple-Bridge#readme",
     "dependencies": {
+        "apple-bridge": "^1.0.1-beta.1",
         "child-process-promise": "^2.2.1"
     },
     "devDependencies": {
         "@types/child-process-promise": "^2.2.2",
         "@types/node": "^17.0.35",
         "copyfiles": "^2.4.1"
-    }
+    },
+    "files": [
+        "dist"
+    ]
 }
