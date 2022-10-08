@@ -1,11 +1,14 @@
 # Apple-Bridge
+
 Retrieve data from Apple Services on macOS and Windows
 
 # Example
-```js
-const AppleBridge = require("apple-bridge"),
-    bridge = new AppleBridge();
-    
+
+```ts
+import { AppleBridge } from "apple-bridge";
+
+const bridge = new AppleBridge();
+
 let musicStatus;
 
 bridge.on("playing", "music", (data) => {
@@ -28,5 +31,6 @@ bridge.on("stopped", "music", (data) => {
 ```
 
 # Information
-* On Windows, Apple TV and Apple Music data is retrieved from iTunes.
-* On macOS, Apple TV and Apple Music data is retrieved from the respective app.
+
+-   On Windows, Apple TV and Apple Music data is retrieved from iTunes.
+-   On macOS, Apple TV and Apple Music data is retrieved from the respective app.
