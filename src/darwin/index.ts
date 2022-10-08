@@ -14,7 +14,12 @@ function fetchAll() {
  * @returns {Object} Current track data
  */
 async function fetchAppleMusic() {
-    if (Object.keys(AppleBridge.getInstance().events.music).length === 0)
+    if (
+        AppleBridge.getInstance().emitter.listenerCount("music:playing") ===
+            0 &&
+        AppleBridge.getInstance().emitter.listenerCount("music:paused") === 0 &&
+        AppleBridge.getInstance().emitter.listenerCount("music:stopped") === 0
+    )
         return;
 
     const data = (

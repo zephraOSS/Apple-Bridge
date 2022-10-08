@@ -1,15 +1,16 @@
 import { fetchITunes } from "./win32";
+import EventEmitter from "events";
 
 export class AppleBridge {
-    public events: {
-        music: Function[];
-        tv: Function[];
-    } = {
-        music: [],
-        tv: []
-    };
+    public emitter = new EventEmitter();
 
     static instance: AppleBridge;
+
+    constructor() {
+        if (AppleBridge.instance) return AppleBridge.instance;
+
+        AppleBridge.instance = this;
+    }
 
     /**
      * Listen to events
@@ -18,10 +19,7 @@ export class AppleBridge {
      * @param {Function} callback
      */
     on(event, service, callback) {
-        if (!this.events[service]) return;
-        if (!this.events[service][event]) this.events[service][event] = [];
-
-        this.events[service][event].push(callback);
+        this.emitter.on(`${service}:${event}`, callback);
     }
 
     /**
@@ -31,11 +29,7 @@ export class AppleBridge {
      * @param  {...any} args
      */
     emit(event, service, ...args) {
-        if (!this.events[service] || !this.events[service][event]) return;
-
-        this.events[service][event].forEach((callback) => {
-            callback(...args);
-        });
+        this.emitter.emit(`${service}:${event}`, ...args);
     }
 
     /**
@@ -45,11 +39,7 @@ export class AppleBridge {
      * @param {Function} callback
      */
     off(event, service, callback) {
-        if (!this.events[service] || !this.events[service][event]) return;
-
-        this.events[service][event] = this.events[service][event].filter(
-            (cb) => cb !== callback
-        );
+        this.emitter.off(`${service}:${event}`, callback);
     }
 
     /**
@@ -59,14 +49,7 @@ export class AppleBridge {
      * @param {Function} callback
      */
     once(event, service, callback) {
-        const self = this;
-
-        function onceCallback(...args) {
-            callback(...args);
-            self.off(event, service, onceCallback);
-        }
-
-        this.on(event, service, onceCallback);
+        this.emitter.once(`${service}:${event}`, callback);
     }
 
     /**
