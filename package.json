@@ -8,7 +8,7 @@
         "start": "npm run build && node ./dist/index.js",
         "build": "tsc && npm run copy",
         "copy": "copyfiles -u 1 -a src/darwin/*.scpt src/win32/wscript/*.js dist/",
-        "test": "echo \"Who needs tests anyway?\" && exit 0"
+        "test": "npm run build && node test.js"
     },
     "repository": {
         "type": "git",
