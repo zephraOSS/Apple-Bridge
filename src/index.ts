@@ -1,4 +1,6 @@
 import { fetchITunes } from "./win32";
+import { TimeChange } from "./managers/timeChange";
+
 import EventEmitter from "events";
 
 export class AppleBridge {
@@ -10,6 +12,8 @@ export class AppleBridge {
         if (AppleBridge.instance) return AppleBridge.instance;
 
         AppleBridge.instance = this;
+
+        new TimeChange();
     }
 
     /**
