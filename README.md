@@ -2,6 +2,13 @@
 
 Retrieve data from Apple Services on macOS and Windows
 
+# Events
+
+-   playing: music
+-   paused: music
+-   stopped: music
+-   timeChange: music
+
 # Example
 
 ```ts
