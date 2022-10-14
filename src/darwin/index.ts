@@ -35,6 +35,14 @@ async function fetchAppleMusic() {
  */
 async function fetchAppleTV() {}
 
+/**
+ * @description Get (iTunes) player state
+ * @returns {PlayerState} Player state
+ */
+export async function getPlayerState(): Promise<PlayerState> {
+    return (await fetchApp.appleMusic()).playerState;
+}
+
 export const fetchApp = {
     appleMusic: async (): Promise<TrackData> => {
         const data: string[] = (
