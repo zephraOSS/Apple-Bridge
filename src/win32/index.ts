@@ -9,9 +9,9 @@ function fetchAll() {
     fetchAppleTV();
 }
 
-/*
- * Fetch Apple Music data
- * @returns {Object} Current track data
+/**
+ * @description Fetch Apple Music data
+ * @returns {TrackData} Current track data
  */
 function fetchAppleMusic() {
     if (
@@ -22,27 +22,19 @@ function fetchAppleMusic() {
     )
         return;
 
-    const data: any = fetchITunes();
+    const data = fetchITunes();
 
-    if (!data || data?.playerState === "stopped")
+    if (Object.keys(data).length === 0 || data.playerState === "stopped")
         AppleBridge.emit("stopped", "music");
     else AppleBridge.emit(data.playerState, "music", data);
 }
 
-// @ts-ignore
-function getITunesPlayerState() {
-    const playerState = fetchITunes("playerState");
-
-    switch (playerState) {
-        case "0":
-            return "stopped";
-        case "1":
-            return "playing";
-        case "2":
-            return "paused";
-        default:
-            return "unknown";
-    }
+/**
+ * @description Get (iTunes) player state
+ * @returns {PlayerState} Player state
+ */
+export function getPlayerState(): PlayerState {
+    return fetchITunes().playerState;
 }
 
 export function fetchITunes(type = "currentTrack") {
@@ -58,7 +50,7 @@ export function fetchITunes(type = "currentTrack") {
         }
     );
 
-    return type === "currentTrack" ? JSON.parse(decodeURI(data)) : data;
+    return JSON.parse(decodeURI(data)) as TrackData;
 }
 
 /*

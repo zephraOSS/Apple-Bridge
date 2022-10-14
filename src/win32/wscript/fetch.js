@@ -47,12 +47,12 @@ switch (WScript.arguments(0)) {
                         album: currentTrack.album,
                         mediaKind: currentTrack.kind,
                         duration: currentTrack.duration,
-                        elapsedTime: iTunes.PlayerPosition,
+                        elapsedTime: parseInt(iTunes.PlayerPosition),
                         remainingTime: parseInt(
                             currentTrack.duration - iTunes.PlayerPosition
-                        ).toString(),
+                        ),
                         genre: currentTrack.genre,
-                        releaseYear: currentTrack.year,
+                        releaseYear: parseInt(currentTrack.year),
                         id: currentTrack.name,
                         playerState: playerState
                     })
