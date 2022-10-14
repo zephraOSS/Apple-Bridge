@@ -22,45 +22,11 @@ async function fetchAppleMusic() {
     )
         return;
 
-    const data = (
-        await exec(
-            `osascript ${path.resolve(
-                `${__dirname.replace(
-                    "app.asar",
-                    "app.asar.unpacked"
-                )}/music.scpt`
-            )}`
-        )
-    ).stdout;
+    const data = await fetchApp.appleMusic();
 
-    if (!data || data === "stopped") AppleBridge.emit("stopped", "music");
-    else {
-        const [
-            artist,
-            title,
-            album,
-            mediaKind,
-            duration,
-            elapsedTime,
-            remainingTime,
-            genre,
-            id,
-            playerState
-        ] = data.split(" -APPLEBRIDGEPLACEHOLDER- ");
-
-        AppleBridge.emit(playerState, "music", {
-            artist,
-            title,
-            album,
-            mediaKind,
-            duration,
-            elapsedTime,
-            remainingTime,
-            genre,
-            id,
-            playerState
-        });
-    }
+    if (Object.keys(data).length === 0 || data.playerState === "stopped")
+        AppleBridge.emit("stopped", "music");
+    else AppleBridge.emit(data.playerState, "music", data);
 }
 
 /*
@@ -68,3 +34,32 @@ async function fetchAppleMusic() {
  * @returns {Object} Apple TV data
  */
 async function fetchAppleTV() {}
+
+export const fetchApp = {
+    appleMusic: async (): Promise<TrackData> => {
+        const data: string[] = (
+            await exec(
+                `osascript ${path.resolve(
+                    `${__dirname.replace(
+                        "app.asar",
+                        "app.asar.unpacked"
+                    )}/music.scpt`
+                )}`
+            )
+        ).stdout.split(" -APPLEBRIDGEPLACEHOLDER- ");
+
+        return {
+            name: data[2],
+            artist: data[1],
+            album: data[3],
+            mediaKind: parseInt(data[4]),
+            elapsedTime: parseInt(data[6]),
+            duration: parseInt(data[5]),
+            remainingTime: parseInt(data[5]) - parseInt(data[6]),
+            genre: data[7],
+            releaseYear: null,
+            id: data[8],
+            playerState: data[0] as PlayerState
+        };
+    }
+};

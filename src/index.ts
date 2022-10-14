@@ -1,4 +1,5 @@
 import { fetchITunes } from "./win32";
+import { fetchApp } from "./darwin";
 import { TimeChange } from "./managers/timeChange";
 
 import EventEmitter from "events";
@@ -107,8 +108,11 @@ export class AppleBridge {
     }
 }
 
-setTimeout(function () {
-    const currentTrack = fetchITunes();
+setTimeout(async () => {
+    const currentTrack =
+        process.platform === "win32"
+            ? fetchITunes()
+            : await fetchApp.appleMusic();
 
     AppleBridge.emit(currentTrack.playerState, "music", currentTrack);
 }, 500);
