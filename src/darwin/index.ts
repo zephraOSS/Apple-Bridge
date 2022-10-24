@@ -1,8 +1,9 @@
 import { AppleBridge } from "../index";
 import { exec } from "child-process-promise";
+
 import * as path from "path";
 
-setInterval(fetchAll, 1000);
+if (process.platform === "darwin") setInterval(fetchAll, 1000);
 
 function fetchAll() {
     fetchAppleMusic();
@@ -15,10 +16,13 @@ function fetchAll() {
  */
 async function fetchAppleMusic() {
     if (
-        AppleBridge.getInstance().emitter.listenerCount("music:playing") ===
+        process.platform !== "darwin" ||
+        (AppleBridge.getInstance().emitter.listenerCount("music:playing") ===
             0 &&
-        AppleBridge.getInstance().emitter.listenerCount("music:paused") === 0 &&
-        AppleBridge.getInstance().emitter.listenerCount("music:stopped") === 0
+            AppleBridge.getInstance().emitter.listenerCount("music:paused") ===
+                0 &&
+            AppleBridge.getInstance().emitter.listenerCount("music:stopped") ===
+                0)
     )
         return;
 
@@ -45,6 +49,8 @@ export async function getPlayerState(): Promise<PlayerState> {
 
 export const fetchApp = {
     appleMusic: async (): Promise<TrackData> => {
+        if (process.platform !== "darwin") return;
+
         const data: string[] = (
             await exec(
                 `osascript ${path.resolve(

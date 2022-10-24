@@ -1,8 +1,9 @@
 import { AppleBridge } from "../index";
 import { execSync } from "child_process";
+
 import * as path from "path";
 
-setInterval(fetchAll, 1000);
+if (process.platform === "win32") setInterval(fetchAll, 1000);
 
 function fetchAll() {
     fetchAppleMusic();
@@ -15,10 +16,13 @@ function fetchAll() {
  */
 function fetchAppleMusic() {
     if (
-        AppleBridge.getInstance().emitter.listenerCount("music:playing") ===
+        process.platform !== "win32" ||
+        (AppleBridge.getInstance().emitter.listenerCount("music:playing") ===
             0 &&
-        AppleBridge.getInstance().emitter.listenerCount("music:paused") === 0 &&
-        AppleBridge.getInstance().emitter.listenerCount("music:stopped") === 0
+            AppleBridge.getInstance().emitter.listenerCount("music:paused") ===
+                0 &&
+            AppleBridge.getInstance().emitter.listenerCount("music:stopped") ===
+                0)
     )
         return;
 
@@ -38,6 +42,8 @@ export function getPlayerState(): PlayerState {
 }
 
 export function fetchITunes(type = "currentTrack") {
+    if (process.platform !== "win32") return;
+
     const data = execSync(
         `cscript //Nologo "${path.join(
             __dirname,
