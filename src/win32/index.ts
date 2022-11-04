@@ -46,7 +46,7 @@ export function fetchITunes(type = "currentTrack") {
 
     const data = execSync(
         `cscript //Nologo "${path.join(
-            __dirname,
+            __dirname.replace("app.asar", "app.asar.unpacked"),
             "wscript",
             "fetch.js"
         )}" ${type}`,
