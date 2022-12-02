@@ -61,7 +61,7 @@ export function fetchITunes(type = "currentTrack"): TrackData {
     );
 
     try {
-        return JSON.parse(data);
+        return JSON.parse(decodeURI(data));
     } catch (e) {
         console.error("[Win32][fetchITunes]", "Error parsing JSON:", e);
 

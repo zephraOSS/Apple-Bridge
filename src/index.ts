@@ -114,5 +114,5 @@ setTimeout(async () => {
             ? fetchITunes()
             : await fetchApp.appleMusic();
 
-    AppleBridge.emit(currentTrack.playerState, "music", currentTrack);
+    AppleBridge.emit(currentTrack?.playerState, "music", currentTrack);
 }, 500);
