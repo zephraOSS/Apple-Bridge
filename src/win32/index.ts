@@ -28,7 +28,11 @@ function fetchAppleMusic() {
 
     const data = fetchITunes();
 
-    if (Object.keys(data).length === 0 || data.playerState === "stopped")
+    if (
+        !data ||
+        Object.keys(data).length === 0 ||
+        data.playerState === "stopped"
+    )
         AppleBridge.emit("stopped", "music");
     else AppleBridge.emit(data.playerState, "music", data);
 }
@@ -38,10 +42,10 @@ function fetchAppleMusic() {
  * @returns {PlayerState} Player state
  */
 export function getPlayerState(): PlayerState {
-    return fetchITunes().playerState;
+    return fetchITunes()?.playerState;
 }
 
-export function fetchITunes(type = "currentTrack") {
+export function fetchITunes(type = "currentTrack"): TrackData {
     if (process.platform !== "win32") return;
 
     const data = execSync(
@@ -56,7 +60,13 @@ export function fetchITunes(type = "currentTrack") {
         }
     );
 
-    return JSON.parse(decodeURI(data)) as TrackData;
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        console.error("[Win32][fetchITunes]", "Error parsing JSON:", e);
+
+        return undefined;
+    }
 }
 
 /*
