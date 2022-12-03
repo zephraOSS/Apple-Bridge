@@ -7,7 +7,7 @@
     "scripts": {
         "start": "npm run build && node ./dist/index.js",
         "build": "tsc && npm run copy",
-        "copy": "copyfiles -u 1 -a src/darwin/*.scpt src/win32/wscript/*.js dist/",
+        "copy": "copyfiles -u 1 -a src/darwin/osascript/*.scpt src/win32/wscript/*.js dist/",
         "test": "npm run build && node test.js"
     },
     "repository": {

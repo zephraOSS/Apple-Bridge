@@ -57,7 +57,7 @@ export const fetchApp = {
                     `${__dirname.replace(
                         "app.asar",
                         "app.asar.unpacked"
-                    )}/music.scpt`
+                    )}/osascript/music.scpt`
                 )}`
             )
         ).stdout.split(" -APPLEBRIDGEPLACEHOLDER- ");
