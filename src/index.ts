@@ -1,7 +1,7 @@
 import { fetchITunes } from "./win32";
 import { fetchApp } from "./darwin";
 
-import { TimeChange } from "./managers/timeChange";
+import { TimeChangeListener } from "./managers/timeChangeListener";
 import { checkIfMusicInstalled } from "./utils/checkIfMusicInstalled";
 
 import EventEmitter from "events";
@@ -25,7 +25,7 @@ export class AppleBridge {
 
         if (!this.isMusicInstalled) return;
 
-        new TimeChange();
+        new TimeChangeListener();
 
         const currentTrack =
             process.platform === "win32"

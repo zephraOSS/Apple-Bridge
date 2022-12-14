@@ -1,12 +1,12 @@
 import { AppleBridge } from "../index";
 
-export class TimeChange {
-    private static instance: TimeChange;
+export class TimeChangeListener {
+    private static instance: TimeChangeListener;
 
     constructor() {
-        if (TimeChange.instance) return TimeChange.instance;
+        if (TimeChangeListener.instance) return TimeChangeListener.instance;
 
-        TimeChange.instance = this;
+        TimeChangeListener.instance = this;
 
         this.init();
     }
