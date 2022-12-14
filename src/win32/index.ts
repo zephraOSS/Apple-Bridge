@@ -47,6 +47,7 @@ export function getPlayerState(): PlayerState {
 
 export function fetchITunes(type = "currentTrack"): TrackData {
     if (process.platform !== "win32") return;
+    if (!AppleBridge.getInstance().isMusicInstalled) return;
 
     const data = execSync(
         `cscript //Nologo "${path.join(

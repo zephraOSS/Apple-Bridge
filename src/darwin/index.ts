@@ -28,7 +28,11 @@ async function fetchAppleMusic() {
 
     const data = await fetchApp.appleMusic();
 
-    if (Object.keys(data).length === 0 || data.playerState === "stopped")
+    if (
+        !data ||
+        Object.keys(data).length === 0 ||
+        data.playerState === "stopped"
+    )
         AppleBridge.emit("stopped", "music");
     else AppleBridge.emit(data.playerState, "music", data);
 }
@@ -44,12 +48,13 @@ async function fetchAppleTV() {}
  * @returns {PlayerState} Player state
  */
 export async function getPlayerState(): Promise<PlayerState> {
-    return (await fetchApp.appleMusic()).playerState;
+    return (await fetchApp.appleMusic())?.playerState;
 }
 
 export const fetchApp = {
     appleMusic: async (): Promise<TrackData> => {
         if (process.platform !== "darwin") return;
+        if (!AppleBridge.getInstance().isMusicInstalled) return;
 
         const data: string[] = (
             await exec(

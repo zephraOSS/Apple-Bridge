@@ -1,11 +1,14 @@
 import { fetchITunes } from "./win32";
 import { fetchApp } from "./darwin";
+
 import { TimeChange } from "./managers/timeChange";
+import { checkIfMusicInstalled } from "./utils/checkIfMusicInstalled";
 
 import EventEmitter from "events";
 
 export class AppleBridge {
     public emitter = new EventEmitter();
+    public isMusicInstalled: boolean;
 
     static instance: AppleBridge;
 
@@ -14,7 +17,22 @@ export class AppleBridge {
 
         AppleBridge.instance = this;
 
+        this.init();
+    }
+
+    async init() {
+        this.isMusicInstalled = await checkIfMusicInstalled();
+
+        if (!this.isMusicInstalled) return;
+
         new TimeChange();
+
+        const currentTrack =
+            process.platform === "win32"
+                ? fetchITunes()
+                : await fetchApp.appleMusic();
+
+        AppleBridge.emit(currentTrack?.playerState, "music", currentTrack);
     }
 
     /**
@@ -107,12 +125,3 @@ export class AppleBridge {
         AppleBridge.getInstance().once(event, service, callback);
     }
 }
-
-setTimeout(async () => {
-    const currentTrack =
-        process.platform === "win32"
-            ? fetchITunes()
-            : await fetchApp.appleMusic();
-
-    AppleBridge.emit(currentTrack?.playerState, "music", currentTrack);
-}, 500);
