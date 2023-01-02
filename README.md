@@ -4,10 +4,20 @@ Retrieve data from Apple Services on macOS and Windows
 
 # Events
 
--   playing: music
--   paused: music
--   stopped: music
--   timeChange: music
+- playing: music
+- paused: music
+- stopped: music
+- timeChange: music
+- jsFileExtensionError: music
+
+# JS File Extension Error
+
+*Only Windows*
+
+This error is thrown when the `.js` file association data is missing or incorrect. This is not a problem with
+Apple-Bridge.
+
+[Learn more](https://www.winhelponline.com/blog/error-there-is-no-script-engine-for-file-extension-when-running-js-files/)
 
 # Example
 
@@ -39,5 +49,5 @@ bridge.on("stopped", "music", (data) => {
 
 # Information
 
--   On Windows, Apple TV and Apple Music data is retrieved from iTunes.
--   On macOS, Apple TV and Apple Music data is retrieved from the respective app.
+- On Windows, Apple TV and Apple Music data is retrieved from iTunes.
+- On macOS, Apple TV and Apple Music data is retrieved from the respective app.
