@@ -8,6 +8,11 @@ bridge.on("playing", "music", (data) => {
     process.exit();
 });
 
+bridge.on("jsFileExtensionError", "music", () => {
+    log("Apple-Bridge detected an JS file extension error.");
+    process.exit();
+});
+
 function log(...args) {
     console.log("[TEST]", ...args);
 }

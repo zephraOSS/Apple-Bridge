@@ -1,6 +1,6 @@
 {
     "name": "apple-bridge",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "Retrieve data from Apple Services on macOS and Windows",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

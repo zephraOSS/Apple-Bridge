@@ -3,7 +3,10 @@ import { execSync } from "child_process";
 
 import * as path from "path";
 
-if (process.platform === "win32") setInterval(fetchAll, 1000);
+let fetchAllInterval: NodeJS.Timeout;
+
+if (process.platform === "win32")
+    fetchAllInterval = setInterval(fetchAll, 1000);
 
 function fetchAll() {
     fetchAppleMusic();
@@ -49,22 +52,39 @@ export function fetchITunes(type = "currentTrack"): TrackData {
     if (process.platform !== "win32") return;
     if (!AppleBridge.getInstance().isMusicInstalled) return;
 
-    const data = execSync(
-        `cscript //Nologo "${path.join(
-            __dirname.replace("app.asar", "app.asar.unpacked"),
-            "wscript",
-            "fetch.js"
-        )}" ${type}`,
-        {
-            encoding: "utf8",
-            windowsHide: true
-        }
-    );
-
     try {
-        return JSON.parse(decodeURI(data));
+        const data = execSync(
+            `cscript //Nologo "${path.join(
+                __dirname.replace("app.asar", "app.asar.unpacked"),
+                "wscript",
+                "fetch.js"
+            )}" ${type}`,
+            {
+                encoding: "utf8",
+                windowsHide: true
+            }
+        );
+
+        try {
+            return JSON.parse(decodeURI(data));
+        } catch (e) {
+            console.error("[Win32][fetchITunes]", "Error parsing JSON:", e);
+
+            return undefined;
+        }
     } catch (e) {
-        console.error("[Win32][fetchITunes]", "Error parsing JSON:", e);
+        console.error(
+            "[Win32][fetchITunes]",
+            "Stopping fetch interval due to error"
+        );
+        console.error("[Win32][fetchITunes]", "Error fetching iTunes:", e);
+
+        AppleBridge.emit("stopped", "music");
+
+        if (e.stdout.includes("There is no script engine for file extension"))
+            AppleBridge.emit("jsFileExtensionError", "music");
+
+        fetchAllInterval.unref();
 
         return undefined;
     }
