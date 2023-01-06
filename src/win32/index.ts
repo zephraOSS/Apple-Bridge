@@ -51,7 +51,7 @@ export function getPlayerState(): PlayerState {
 export function quitITunes() {
     fetchAllInterval.unref();
 
-    setTimeout(() => execSync(`taskkill /F /IM "iTunes.exe"`), 1000);
+    setTimeout(() => execSync(`taskkill /F /IM "iTunes.exe"`), 2500);
 }
 
 export function fetchITunes(type = "currentTrack"): TrackData {
