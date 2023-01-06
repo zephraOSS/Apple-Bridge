@@ -48,6 +48,12 @@ export function getPlayerState(): PlayerState {
     return fetchITunes()?.playerState;
 }
 
+export function quitITunes() {
+    fetchAllInterval.unref();
+
+    setTimeout(() => execSync(`taskkill /F /IM "iTunes.exe"`), 1000);
+}
+
 export function fetchITunes(type = "currentTrack"): TrackData {
     if (process.platform !== "win32") return;
     if (!AppleBridge.getInstance().isMusicInstalled) return;

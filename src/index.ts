@@ -1,4 +1,4 @@
-import { fetchITunes } from "./win32";
+import { fetchITunes, quitITunes } from "./win32";
 import { fetchApp } from "./darwin";
 
 import { TimeChangeListener } from "./managers/timeChangeListener";
@@ -129,3 +129,5 @@ export class AppleBridge {
         AppleBridge.getInstance().once(event, service, callback);
     }
 }
+
+export { fetchITunes, quitITunes };
