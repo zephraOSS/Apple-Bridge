@@ -2,7 +2,9 @@ import { fetchITunes } from "./win32";
 import { fetchApp } from "./darwin";
 
 import { TimeChangeListener } from "./managers/timeChangeListener";
+
 import { checkIfMusicInstalled } from "./utils/checkIfMusicInstalled";
+import { checkIfMusicRunning } from "./utils/checkIfMusicRunning";
 
 import EventEmitter from "events";
 
@@ -21,6 +23,8 @@ export class AppleBridge {
     }
 
     async init() {
+        if (!checkIfMusicRunning()) return setTimeout(() => this.init(), 5000);
+
         this.isMusicInstalled = await checkIfMusicInstalled();
 
         if (!this.isMusicInstalled) return;
