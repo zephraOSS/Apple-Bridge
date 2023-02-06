@@ -5,7 +5,11 @@ export function checkIfMusicRunning() {
             process.platform === "win32" ? "tasklist" : "ps -ax | grep Music",
         app = process.platform === "win32" ? "iTunes.exe" : "Music";
 
-    const res = execSync(cmd, { encoding: "utf8" });
+    try {
+        const res = execSync(cmd, { encoding: "utf8" });
 
-    return res.toLowerCase().indexOf(app.toLowerCase()) > -1;
+        return res.toLowerCase().indexOf(app.toLowerCase()) > -1;
+    } catch (err) {
+        return false;
+    }
 }
