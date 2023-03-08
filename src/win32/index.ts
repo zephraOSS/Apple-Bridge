@@ -90,7 +90,7 @@ export function fetchITunes(type = "currentTrack"): TrackData {
         if (e.stdout?.includes("There is no script engine for file extension"))
             AppleBridge.emit("jsFileExtensionError", "music");
 
-        fetchAllInterval.unref();
+        clearTimeout(fetchAllInterval);
 
         return undefined;
     }
