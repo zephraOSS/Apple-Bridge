@@ -49,9 +49,18 @@ export function getPlayerState(): PlayerState {
 }
 
 export function quitITunes() {
-    fetchAllInterval.unref();
+    console.log("[Win32][quitITunes]", "Stopping fetch interval");
+    clearTimeout(fetchAllInterval);
 
-    setTimeout(() => execSync(`taskkill /F /IM "iTunes.exe"`), 2500);
+    console.log("[Win32][quitITunes]", "Killing iTunes in 3 seconds");
+    setTimeout(() => {
+        try {
+            console.log("[Win32][quitITunes]", "Killing iTunes");
+            execSync(`taskkill /F /IM "iTunes.exe"`);
+        } catch (e) {
+            console.error("[Win32][quitITunes]", "Error killing iTunes:", e);
+        }
+    }, 3000);
 }
 
 export function fetchITunes(type = "currentTrack"): TrackData {
