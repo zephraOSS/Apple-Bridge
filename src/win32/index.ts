@@ -58,6 +58,7 @@ export function quitITunes() {
         try {
             console.log("[Win32][quitITunes]", "Killing iTunes");
             execSync(`taskkill /F /IM "iTunes.exe"`);
+            AppleBridge.emit("stopped", "music");
 
             const checkIfRunningInt = setInterval(() => {
                 if (checkIfMusicRunning()) {
