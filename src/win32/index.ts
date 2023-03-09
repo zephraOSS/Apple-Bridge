@@ -1,5 +1,6 @@
 import { AppleBridge } from "../index";
 import { execSync } from "child_process";
+import { checkIfMusicRunning } from "../utils/checkIfMusicRunning";
 
 import * as path from "path";
 
@@ -57,6 +58,14 @@ export function quitITunes() {
         try {
             console.log("[Win32][quitITunes]", "Killing iTunes");
             execSync(`taskkill /F /IM "iTunes.exe"`);
+
+            const checkIfRunningInt = setInterval(() => {
+                if (checkIfMusicRunning()) {
+                    clearInterval(checkIfRunningInt);
+
+                    fetchAllInterval = setInterval(fetchAll, 1000);
+                }
+            }, 5000);
         } catch (e) {
             console.error("[Win32][quitITunes]", "Error killing iTunes:", e);
         }
