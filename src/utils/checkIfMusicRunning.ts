@@ -10,6 +10,7 @@ export function checkIfMusicRunning() {
 
         return res.toLowerCase().indexOf(app.toLowerCase()) > -1;
     } catch (err) {
+        console.log("[checkIfMusicRunning]", err);
         return false;
     }
 }
