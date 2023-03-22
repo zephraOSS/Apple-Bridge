@@ -1,7 +1,9 @@
 import { exec } from "child_process";
 
 export async function checkIfMusicInstalled(): Promise<boolean> {
-    const music = await checkIfAppIsInstalled("iTunes", "Music");
+    if (process.platform !== "win32") return Promise.resolve(true);
+
+    const music = await checkIfAppIsInstalled("iTunes");
 
     console[music ? "info" : "warn"](
         "[checkIfMusicInstalled]",
@@ -11,19 +13,13 @@ export async function checkIfMusicInstalled(): Promise<boolean> {
     return music;
 }
 
-export async function checkIfAppIsInstalled(
-    appName: string,
-    appNameMac?: string
-): Promise<boolean> {
+export async function checkIfAppIsInstalled(appName: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        exec(
-            process.platform === "win32"
-                ? `where ${appName}`
-                : `which ${appNameMac ?? appName}`,
-            (err, stdout) => {
-                if (err) reject(false);
-                else resolve(stdout.includes(appName));
-            }
-        );
+        exec(`where ${appName}`, (err, stdout) => {
+            if (err) {
+                console.log("[checkIfAppIsInstalled]", err);
+                reject(false);
+            } else resolve(stdout.includes(appName));
+        });
     });
 }
