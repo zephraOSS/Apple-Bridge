@@ -19,7 +19,37 @@ JSON || (JSON = {});
     }
 })();
 
-var iTunes = WScript.CreateObject("iTunes.Application");
+var iTunes = WScript.CreateObject("iTunes.Application"),
+    fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+
+var ITArtworkFormatUnknown = 0;
+var ITArtworkFormatJPEG = 1;
+var ITArtworkFormatPNG = 2;
+var ITArtworkFormatBMP = 3;
+
+function ArtworkFormatToFileExtension(artworkFormat) {
+    switch (artworkFormat) {
+        case ITArtworkFormatUnknown:
+            return ".unk";
+            break;
+
+        case ITArtworkFormatJPEG:
+            return ".jpg";
+            break;
+
+        case ITArtworkFormatPNG:
+            return ".png";
+            break;
+
+        case ITArtworkFormatBMP:
+            return ".bmp";
+            break;
+
+        default:
+            return ".unk";
+            break;
+    }
+}
 
 switch (WScript.arguments(0)) {
     case "currentTrack":
@@ -67,6 +97,50 @@ switch (WScript.arguments(0)) {
                 )
             );
         }
+        break;
+
+    case "currentTrackArtwork":
+        var currentTrack = iTunes.currentTrack,
+            artworkFolder = WScript.arguments(1);
+
+        if (currentTrack.Artwork.Count === 0 || !artworkFolder) {
+            WScript.Echo(
+                encodeURI(
+                    JSON.stringify({
+                        artwork: undefined
+                    })
+                )
+            );
+
+            break;
+        }
+
+        var currArtworks = currentTrack.Artwork,
+            numArtworks = currArtworks.Count,
+            artwork = currArtworks.Item(numArtworks),
+            artworkFileName;
+
+        if (!fileSystem.FolderExists(artworkFolder)) {
+            fileSystem.CreateFolder(artworkFolder);
+        }
+
+        artworkFolder = fileSystem.GetFolder(artworkFolder);
+        artworkFileName =
+            artworkFolder.Path +
+            "\\" +
+            "artwork" +
+            ArtworkFormatToFileExtension(artwork.Format);
+
+        artwork.SaveArtworkToFile(artworkFileName);
+
+        WScript.Echo(
+            encodeURI(
+                JSON.stringify({
+                    artwork: artworkFileName
+                })
+            )
+        );
+
         break;
 
     case "playerState":
