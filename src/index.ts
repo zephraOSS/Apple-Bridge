@@ -11,21 +11,32 @@ import EventEmitter from "events";
 export class AppleBridge {
     public emitter = new EventEmitter();
     public isMusicInstalled: boolean;
+    public checkIfInstalled: {
+        music: boolean;
+    };
 
     static instance: AppleBridge;
 
-    constructor() {
+    constructor(
+        checkIfInstalled = {
+            music: true
+        }
+    ) {
         if (AppleBridge.instance) return AppleBridge.instance;
 
         AppleBridge.instance = this;
 
+        this.checkIfInstalled = checkIfInstalled;
         this.init();
     }
 
     async init() {
         if (!checkIfMusicRunning()) return setTimeout(() => this.init(), 5000);
 
-        this.isMusicInstalled = await checkIfMusicInstalled();
+        this.isMusicInstalled =
+            this.checkIfInstalled?.music ?? true
+                ? await checkIfMusicInstalled()
+                : true;
 
         if (!this.isMusicInstalled) return;
 
