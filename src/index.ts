@@ -24,10 +24,10 @@ export class AppleBridge {
     ) {
         if (AppleBridge.instance) return AppleBridge.instance;
 
-        AppleBridge.instance = this;
-
         this.checkIfInstalled = checkIfInstalled;
         this.init();
+
+        AppleBridge.instance = this;
     }
 
     async init() {

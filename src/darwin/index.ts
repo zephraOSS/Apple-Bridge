@@ -20,9 +20,9 @@ async function fetchAppleMusic() {
         (AppleBridge.getInstance().emitter.listenerCount("music:playing") ===
             0 &&
             AppleBridge.getInstance().emitter.listenerCount("music:paused") ===
-                0 &&
+            0 &&
             AppleBridge.getInstance().emitter.listenerCount("music:stopped") ===
-                0)
+            0)
     )
         return;
 
@@ -66,7 +66,7 @@ export const fetchApp = {
                         )}/osascript/music.scpt`
                     )}`
                 )
-            ).stdout.split(" -APPLEBRIDGEPLACEHOLDER- ");
+            ).stdout.split(",  -APPLEBRIDGEPLACEHOLDER- , ");
 
             return {
                 name: data[2],
@@ -78,7 +78,7 @@ export const fetchApp = {
                 remainingTime: parseInt(data[5]) - parseInt(data[6]),
                 genre: data[7],
                 releaseYear: null,
-                id: data[8],
+                id: data[8].replace("\n", ""),
                 playerState: data[0] as PlayerState
             };
         } catch (e) {
