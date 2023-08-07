@@ -68,17 +68,27 @@ export const fetchApp = {
                 )
             ).stdout.split(",  -APPLEBRIDGEPLACEHOLDER- , ");
 
+            data[data.length - 1] = data[data.length - 1]?.replace("\n", "");
+
             return {
                 name: data[2],
                 artist: data[1],
                 album: data[3],
-                mediaKind: parseInt(data[4]),
+                mediaKind: (data[4] === "music video"
+                    ? "musicVideo"
+                    : data[4]) as MediaKind,
                 elapsedTime: parseInt(data[6]),
                 duration: parseInt(data[5]),
                 remainingTime: parseInt(data[5]) - parseInt(data[6]),
                 genre: data[7],
-                releaseYear: null,
-                id: data[8].replace("\n", ""),
+                releaseYear: parseInt(data[8]),
+                id: data[9],
+                airPlayEnabled: data[10] === "true",
+                airPlayDevice: {
+                    name: data[11],
+                    kind: data[12] as AirPlayDeviceKind,
+                    selected: data[13] === "true"
+                },
                 playerState: data[0] as PlayerState
             };
         } catch (e) {

@@ -75,7 +75,7 @@ switch (WScript.arguments(0)) {
                         name: currentTrack.name,
                         artist: currentTrack.artist,
                         album: currentTrack.album,
-                        mediaKind: currentTrack.kind,
+                        mediaKind: currentTrack.kind === 0 ? "unknown" : "song",
                         duration: currentTrack.duration,
                         elapsedTime: parseInt(iTunes.PlayerPosition),
                         remainingTime: parseInt(
@@ -84,6 +84,8 @@ switch (WScript.arguments(0)) {
                         genre: currentTrack.genre,
                         releaseYear: parseInt(currentTrack.year),
                         id: currentTrack.name,
+                        airPlayEnabled: false,
+                        airPlayDevice: null,
                         playerState: playerState
                     })
                 )
