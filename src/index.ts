@@ -19,7 +19,7 @@ export class AppleBridge {
 
     constructor(
         checkIfInstalled = {
-            music: true
+            music: false
         }
     ) {
         if (AppleBridge.instance) return AppleBridge.instance;
